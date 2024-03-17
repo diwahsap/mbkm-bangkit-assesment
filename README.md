@@ -1,5 +1,5 @@
 # Automated Student Evaluation for Kampus Merdeka (MBKM)
-> Bangkit Academy 2024 H1
+> Bangkit Academy 2024 H1 - [Medium Article](https://diwahsap.medium.com/input-manual-otomatisasi-saja-7884f5366667) - [Demo Video](https://youtu.be/zaWto1B92jg?si=ULhmLlDvguXPXTLg)
 
 ## Overview
 This project automates the initial assessment process for mentors to evaluate mentees in the [Kampus Merdeka (MBKM)](https://mentor.kampusmerdeka.kemdikbud.go.id/) program.
@@ -25,4 +25,6 @@ PASSWORD=your_password
 - `file.xlsx`: Spreadsheet containing student information.
 
 ## Notes
-This project assumes familiarity with web automation using Selenium and basic Python programming. If you have problem or (new) idea, you can contact me at dim.mas.ws@gmail.com or @diwahsap (Discord).
+This project assumes familiarity with web automation using Selenium and basic Python programming. 
+
+If you have problem or (new) idea, you can contact me at dim.mas.ws@gmail.com or @diwahsap (Discord).
