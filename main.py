@@ -102,14 +102,25 @@ def click_students(driver, df_score, idx):
 
     asses_xpath = f'//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[3]/div[2]/div[{idx}]/div[5]/div'
     asses_button = driver.find_element_by_xpath(asses_xpath)
-    click_element(asses_button)
+    driver.execute_script("arguments[0].click();", asses_button) # if use click_element get warning and make the program error
     write_log(f"{idx} - {name_in_browser.title()} - Click Assesment Button")
     
     return name_score
     
-def draft_and_confirm(driver):
-    """click save to draft and confirm draft button to save the evaluation to draft."""
-    save_to_draft_button = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[2]/div[21]/div[1]/div')
+def draft_and_confirm(driver, count_column_have_score):
+    """click save to draft and confirm draft button to save the evaluation to draft.
+    
+    Args:
+        driver (WebDriver): The WebDriver instance used for browser automation.
+        count_column_have_score (int): count of assesment. Need for get xpath draft button. 
+                            +3 based by count of container.
+                            ML is 18 assesement, MD is 14. 
+                            18 + 3 = 21, xpath code for draft ml
+                            14 + 3 = 17, xpath code fro draft md
+        
+    Returns:
+        None"""
+    save_to_draft_button = driver.find_element_by_xpath(f'//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[2]/div[{count_column_have_score + 3}]/div[1]/div')
     driver.execute_script("arguments[0].click();", save_to_draft_button)
 
     confirm_draft_button = driver.find_element_by_xpath('//*[@id="root"]/div[1]/div[2]/div/div[4]/div')
@@ -151,7 +162,7 @@ for i in range(1, count_cohort + 1):
         process_score_comment_students(driver, name_score, df_comment, idx=j, idx_student=i)
     
     # save to draft and confirm draft
-    draft_and_confirm(driver)
+    draft_and_confirm(driver, count_column_have_score)
 
     write_log(f"{i} - Processing Student - Finish")
     write_log("=====================================")
