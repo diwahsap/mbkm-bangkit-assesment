@@ -1,17 +1,28 @@
-# This code under development. Please wait.
-## Please help me write a README.md file for this project. If you have a (new) idea, please pull request or create issue in this repo.
+# Automated Student Evaluation for Kampus Merdeka (MBKM)
+> Bangkit Academy 2024 H1
 
-## important
-- i am using Selenium. so you need to install the web driver for your browser.
-- Don't forget install libraries.
-- if you are ML mentor, please check assesment files from Bangkit Team. Check in the "Machine Learning Comments" sheet, A5 cell. Change from "Tugas Soft skills" into "Tugas Soft Skills". (My program need to spesific skills in sheet and in brower same. I will fix this issue later)
-- if you from different role (CC/MD), please check the spesific skills in sheet (1 or 2) and in browser same
-- if you using windows/linux, change line 79 from "Keys.COMMAND" to "Keys.CONTROL"
-- line 124, change the path to your class assesment file
-- in line 133 and 134, please fill with your email and password. This program run in your local machine, so the email and password is safe.
-- this program will save the assesment to draft
+## Overview
+This project automates the initial assessment process for mentors to evaluate mentees in the [Kampus Merdeka (MBKM)](https://mentor.kampusmerdeka.kemdikbud.go.id/) program.
 
-## Demo 
-[Ini](https://youtu.be/zaWto1B92jg)
+## Instalation
+1. Clone this repository. Unzip and go to directory.
+2. Install the required dependencies using `pip install -r requirements.txt`.
+3. Download the [appropriate WebDriver for Selenium](https://www.lambdatest.com/learning-hub/install-selenium-python) (e.g., ChromeDriver) and place it in your PATH.
+4. Ensure that the `spreadsheet (xlsx)` containing student information is present in the root directory. Don't forget to change xlsx file path at line 20 in `main.py` file.
+5. Please fill the `.env` files with the following variables:
+```
+EMAIL=your_email@example.com
+PASSWORD=your_password
+```
+6. Run the main.py script using `python main.py`.
+7. The program will automatically log in to the specified website, navigate to the evaluation page, and process each student's score and comments.
+8. Upon completion, the program will generate logs detailing the execution process.
 
-you can contact me at diwahsap@bangkit.academy or diwahsap at Discord
+## Files
+- `main.py`: Contains the main program logic for automating the student evaluation process.
+- `utils.py`: Provides various utility functions used in the automation process, such as logging, clicking elements, login, comparison checks, and more.
+- `.env`: Contains your email and password used for logging into the dashboard. Ensure that you provide the correct credentials in this file.
+- `file.xlsx`: Spreadsheet containing student information.
+
+## Notes
+This project assumes familiarity with web automation using Selenium and basic Python programming. If you have problem or (new) idea, you can contact me at dim.mas.ws@gmail.com or @diwahsap (Discord).
