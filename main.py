@@ -100,7 +100,7 @@ def click_students(driver, df_score, idx):
     # get the score based on name
     name_score = df_score[df_score['Nama'] == name_in_browser.title()]
 
-    asses_xpath = f'//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[3]/div[2]/div[{idx}]/div[5]/div/div/p'
+    asses_xpath = f'//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[3]/div[2]/div[{idx}]/div[5]/div'
     asses_button = driver.find_element_by_xpath(asses_xpath)
     click_element(asses_button)
     write_log(f"{idx} - {name_in_browser.title()} - Click Assesment Button")
