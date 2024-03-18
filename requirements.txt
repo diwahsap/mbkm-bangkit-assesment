@@ -1,3 +1,6 @@
 pandas==2.1.4
 selenium==3.141.0
 python-dotenv==1.0.1
+urllib3==1.26.16
+requests==2.31.0
+openpyxl==3.0.10
