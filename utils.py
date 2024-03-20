@@ -47,10 +47,10 @@ def see_more_and_evaluation(driver):
     # wait for the page to load
     driver.implicitly_wait(10)
 
-    see_more_button = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[1]/div/div[1]/div[2]/p')
+    see_more_button = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[2]/div/div[1]/div[2]/p')
     click_element(see_more_button)
 
-    evaluation_button = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[1]/div/div[2]/div/div[3]/div[2]')
+    evaluation_button = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[2]/div/div[2]/div/div[3]/div[2]')
     click_element(evaluation_button)
 
 def compare_student(driver, df_score):
