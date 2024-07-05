@@ -2,6 +2,8 @@ import platform
 from datetime import datetime
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+import time
 
 
 # Function to write log with timestamp
@@ -33,13 +35,13 @@ def login(driver, email, password):
     """login to dashboard using email and password"""
     driver.get('https://mentor.kampusmerdeka.kemdikbud.go.id/')
 
-    email_input = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div/div[2]/div/div/main/div[2]/div[1]/div[2]/input')
+    email_input = driver.find_element(By.XPATH, '//*[@id="root"]/div[4]/div/div[2]/div/div/main/div[2]/div[1]/div[2]/input')
     email_input.send_keys(email)
 
-    password_input = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div/div[2]/div/div/main/div[2]/div[2]/div[2]/input')
+    password_input = driver.find_element(By.XPATH, '//*[@id="root"]/div[4]/div/div[2]/div/div/main/div[2]/div[2]/div[2]/input')
     password_input.send_keys(password)
 
-    login_button = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div/div[2]/div/div/main/div[3]/div/p')
+    login_button = driver.find_element(By.XPATH, '//*[@id="root"]/div[4]/div/div[2]/div/div/main/div[3]/div/p')
     click_element(login_button)
 
 def see_more_and_evaluation(driver):
@@ -47,10 +49,10 @@ def see_more_and_evaluation(driver):
     # wait for the page to load
     driver.implicitly_wait(10)
 
-    see_more_button = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[2]/div/div[1]/div[2]/p')
+    see_more_button = driver.find_element(By.XPATH, '//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[2]/div/div[1]/div[2]/p')
     click_element(see_more_button)
 
-    evaluation_button = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[2]/div/div[2]/div/div[3]/div[2]')
+    evaluation_button = driver.find_element(By.XPATH, '//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[2]/div/div[2]/div/div[3]/div[2]')
     click_element(evaluation_button)
 
 def compare_student(driver, df_score):
@@ -66,7 +68,7 @@ def compare_student(driver, df_score):
     """
     write_log("Start comparing student in browser and df_score")
 
-    get_student_number_in_browser = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[2]/p/span')
+    get_student_number_in_browser = driver.find_element(By.XPATH, '//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[2]/p/span')
     
     text = get_student_number_in_browser.text  # 'xx active participants'
     count_student_browser = int(text.split()[0])  # xx number
@@ -85,7 +87,7 @@ def compare_student(driver, df_score):
     # get the student_name in browser
     for i in range(1, count_student_browser + 1):
         name_xpath = f'//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[3]/div[2]/div[{i}]/div[1]/div/p'
-        name_in_browser = driver.find_element_by_xpath(name_xpath).text
+        name_in_browser = driver.find_element(By.XPATH, name_xpath).text
         browser_student_name.append(name_in_browser)
     
     # compare student name in browser and student name in df_score
@@ -115,7 +117,7 @@ def compare_skills_name(driver, df_score, df_comment):
     student_skill_browser = []
     for i in range(1, count_student_skill_df_score + 1):
         skill_name_xpath = f'//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[2]/div[{i}]/p'
-        skill_in_browser = driver.find_element_by_xpath(skill_name_xpath).text
+        skill_in_browser = driver.find_element(By.XPATH, skill_name_xpath).text
         student_skill_browser.append(skill_in_browser)
 
     student_skill_sheet1 = sorted(df_score.columns.tolist()[3:]) 
@@ -138,20 +140,23 @@ def process_score_comment_students(driver, name_score, df_comment, idx, idx_stud
 
     Returns:
         None
-    """
-    header_name_xpath = f'//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[2]/div[{idx}]/p'
-    header_name = driver.find_element_by_xpath(header_name_xpath).text
+    """        
+    header_name_xpath = f'//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[2]/div[2]/div[{idx}]/p'
+    header_name = driver.find_element(By.XPATH, header_name_xpath).text
     write_log(f"{idx_student} - {idx} - {name_score['Nama'].values[0]} - {header_name} - Start Processing Score and Comment")
 
     # make the column in name_score to lower case
     name_score.columns = name_score.columns.str.lower()
-    name_score.rename(columns = {'nama':'Nama'}, inplace = True) 
+    name_score.rename(columns = {'nama':'Nama'}, inplace = True)
 
     # Find the score based on header_name (case insensitive)
-    score = name_score[header_name.lower()].values[0]
-
+    if header_name == "Tugas Soft Skills": # workaround for "Soft Skills typo"
+        score = name_score['tugas soft skill'].values[0]
+    else:
+        score = name_score[header_name.lower()].values[0]
+                                            
     # click on score dropdown
-    score_dropdown = Select(driver.find_element_by_xpath(f'//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[2]/div[{idx}]/div/div[1]/div/div[2]/select'))
+    score_dropdown = Select(driver.find_element(By.XPATH, f'//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[2]/div[2]/div[{idx}]/div/div[1]/div/div[2]/select'))
     score_dropdown.select_by_visible_text(str(score))
     write_log(f"{idx_student} - {idx} - {name_score['Nama'].values[0]} - {header_name} - {score}")
 
@@ -162,8 +167,9 @@ def process_score_comment_students(driver, name_score, df_comment, idx, idx_stud
     else:
         comment = df_comment[df_comment['Course List'].str.lower() == header_name.lower()].values[0][2]
         write_log(f"{idx_student} - {idx} - {name_score['Nama'].values[0]} - {header_name} - Bawah - {comment}")
+                                                   
+    comment_area = driver.find_element(By.XPATH, f'//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[2]/div[2]/div[{idx}]/div/div[2]/div/div[2]/textarea')
 
-    comment_area = driver.find_element_by_xpath(f'//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[2]/div[{idx}]/div/div[2]/div/div[2]/textarea')
     # clear text area so it can be filled with new comment
     if platform.system() == "Darwin":
         comment_area.send_keys(Keys.COMMAND, "a")
@@ -186,16 +192,21 @@ def click_students(driver, df_score, idx):
         DataFrame: The score information for the clicked student.
     """
     name_xpath = f'//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[3]/div[2]/div[{idx}]/div[1]/div/p'
-    name_in_browser = driver.find_element_by_xpath(name_xpath).text
+    name_in_browser = driver.find_element(By.XPATH, name_xpath).text
     write_log(f"{idx} - {name_in_browser.title()} - Get Name")
 
     # get the score based on name (case insensitive)
     name_score = df_score[df_score['Nama'].str.lower() == name_in_browser.lower()]
 
     asses_xpath = f'//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[3]/div[2]/div[{idx}]/div[5]/div'
-    asses_button = driver.find_element_by_xpath(asses_xpath)
+    asses_button = driver.find_element(By.XPATH, asses_xpath)
     execute_click(driver, asses_button)
     write_log(f"{idx} - {name_in_browser.title()} - Click Assesment Button")
+
+    final_eval_xpath = f'//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[1]/div[1]/div[2]'
+    final_eval_button = driver.find_element(By.XPATH, final_eval_xpath)
+    execute_click(driver, final_eval_button)
+    write_log(f"{idx} - {name_in_browser.title()} - Click Final Evaluation Button")
     
     return name_score
     
@@ -213,12 +224,12 @@ def checking_before_execute(driver, df_score, df_comment):
     """
     compare_student(driver, df_score)
 
-    asses_xpath = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[3]/div[2]/div[1]/div[5]/div')
+    asses_xpath = driver.find_element(By.XPATH, '//*[@id="root"]/div[4]/div[2]/div/div[2]/div/div[2]/div/div[2]/div[3]/div[2]/div[1]/div[5]/div')
     execute_click(driver, asses_xpath)
 
     compare_skills_name(driver, df_score, df_comment)
 
-    go_back_xpath = driver.find_element_by_xpath('//*[@id="root"]/div[4]/div/div[5]/div/div/div/div/div/div')
+    go_back_xpath = driver.find_element(By.XPATH, '//*[@id="root"]/div[4]/div/div[5]/div/div/div/div/div/div')
     execute_click(driver, go_back_xpath)
 
 def draft_and_confirm(driver, count_column_have_score):
@@ -235,8 +246,9 @@ def draft_and_confirm(driver, count_column_have_score):
     Returns:
         None
     """
-    save_to_draft_button = driver.find_element_by_xpath(f'//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[2]/div[{count_column_have_score + 3}]/div[1]/div')
-    execute_click(driver, save_to_draft_button)
 
-    confirm_draft_button = driver.find_element_by_xpath('//*[@id="root"]/div[1]/div[2]/div/div[4]/div')
+    save_to_draft_button = driver.find_element(By.XPATH, f'//*[@id="root"]/div[4]/div/div[3]/div/div[3]/div[2]/div[2]/div[{count_column_have_score + 3}]/div[1]/div')
+    execute_click(driver, save_to_draft_button)
+                                                          
+    confirm_draft_button = driver.find_element(By.XPATH, '//*[@id="root"]/div[1]/div[2]/div/div[4]/div')
     execute_click(driver, confirm_draft_button)
