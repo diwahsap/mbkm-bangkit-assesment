@@ -1,7 +1,7 @@
-# Automated Student Evaluation for Kampus Merdeka (MBKM)
+# MBKM EvalAuto: Streamlined Mentor Evaluation System
 
 ## Overview
-This project automates the assessment process for mentors to evaluate mentees in the [Kampus Merdeka (MBKM)](https://mentor.kampusmerdeka.kemdikbud.go.id/) program.
+MBKM EvalAuto is an automation tool designed to simplify the evaluation process for mentors in the Kampus Merdeka (MBKM) program. It efficiently transfers initial and final evaluation scores from Bangkit Academy's Google Sheet (xlsx) directly into the MBKM platform. This automation significantly reduces the time and effort required for mentors to input scores manually, ensuring accuracy and consistency in the evaluation process.
 
 > [!IMPORTANT]  
 > **Final Evaluation Bangkit Academy 2024 H1**
